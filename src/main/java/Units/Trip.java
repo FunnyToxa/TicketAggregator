@@ -11,5 +11,7 @@ public class Trip {
     private City startCity;
     private City finishCity;
     private Date date;
+
+//    public enum Type {Air, Bus, Train};
 }
 
