@@ -1,4 +1,4 @@
-package Units;
+package RESTService.Units;
 
 import java.util.Date;
 
@@ -10,7 +10,10 @@ public class Trip {
     private String Company;
     private City startCity;
     private City finishCity;
-    private Date date;
+    //дата поедки
+    private Date tripDate;
+    //дата поиска
+    private Date searchDate;
 
 //    public enum Type {Air, Bus, Train};
 }

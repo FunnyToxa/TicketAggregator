@@ -1,4 +1,4 @@
-package Units;
+package RESTService.Units;
 
 import javax.persistence.*;
 
@@ -14,6 +14,4 @@ public class City {
     private String cityName;
     private String country;
     private String region;
-    private int coordX;
-    private int coordY;
 }

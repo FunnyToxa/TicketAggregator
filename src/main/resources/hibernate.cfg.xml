@@ -9,7 +9,7 @@
         <property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
         <property name="connection.pool_size">5</property>
         <property name="hbm2ddl.auto">update</property>
-        <mapping class="Units.User"/>
-        <mapping class="Units.UserRequest"/>
+        <mapping class="RESTService.Units.User"/>
+        <mapping class="RESTService.Units.UserRequest"/>
     </session-factory>
 </hibernate-configuration>
