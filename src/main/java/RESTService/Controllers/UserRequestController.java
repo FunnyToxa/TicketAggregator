@@ -1,6 +1,6 @@
-package RESTService;
+package RESTService.Controllers;
 
-import RESTService.Utils.TicketAggrUtils;
+import RESTService._Utils.TicketAggrUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

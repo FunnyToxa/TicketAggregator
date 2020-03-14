@@ -1,4 +1,4 @@
-package RESTService;
+package RESTService.Controllers;
 
 public enum HttpStatus {
     OK(100, "Success"),

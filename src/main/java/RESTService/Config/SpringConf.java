@@ -1,5 +1,6 @@
-package RESTService.Utils;
+package RESTService.Config;
 
+import RESTService._Utils.TicketAggrUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

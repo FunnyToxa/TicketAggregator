@@ -1,10 +1,11 @@
-package RESTService.DBUtils;
+package RESTService._UtilsDB;
 
 import RESTService.Units.UserRequest;
-import RESTService.Utils.DateUtils;
+import RESTService._Utils.DateUtils;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -13,6 +14,7 @@ import javax.persistence.criteria.Root;
 import java.util.Date;
 import java.util.List;
 
+@Component
 public class UserRequestDAO {
     //Сколько минут запрос будет считаться повторяющимся
     //т.е. по истечение скольки минут аналогичный запрос будет по новой добавлен в базу и отправлен на поиск

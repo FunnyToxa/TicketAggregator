@@ -1,4 +1,4 @@
-package RESTService.DBUtils;
+package RESTService._UtilsDB;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;

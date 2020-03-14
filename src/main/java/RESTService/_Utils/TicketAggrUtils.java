@@ -1,34 +1,16 @@
-package RESTService.Utils;
+package RESTService._Utils;
 
-import RESTService.DBUtils.UserRequestDAO;
+import RESTService._UtilsDB.UserRequestDAO;
 import RESTService.Units.UserRequest;
-import RESTService.UserRequestDTO;
+import RESTService.Controllers.UserRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class TicketAggrUtils {
-//    public void TestMethod(){
-//
-//        UserRequestDAO urDAO = new UserRequestDAO();
-//
-////        User user = new User("Petr", "Velikiy", 31, "nety");
-//        User user = new User("test@mail.ru");
-//
-//        UserRequest ur1 = new UserRequest(user);
-//        urDAO.save(ur1);
-//
-//        UserRequest ur2 = new UserRequest(user);
-//        urDAO.save(ur2);
-//    }
 
-    //TODO: попробовать переделать на Autowared
-//    @Autowired
+    @Autowired
     private UserRequestDAO userRequestDAO;
-
-    public TicketAggrUtils(){
-         userRequestDAO = new UserRequestDAO();
-    }
 
     /**
      * Проверка - есть ли запрос в базе

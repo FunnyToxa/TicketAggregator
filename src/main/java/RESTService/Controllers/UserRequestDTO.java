@@ -1,4 +1,4 @@
-package RESTService;
+package RESTService.Controllers;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 

@@ -1,8 +1,7 @@
-package RESTService.Utils;
+package RESTService._Utils;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
 
 /**
  * Утильный класс для операций с датой

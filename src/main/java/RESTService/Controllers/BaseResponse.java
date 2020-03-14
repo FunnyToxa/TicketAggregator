@@ -1,4 +1,4 @@
-package RESTService;
+package RESTService.Controllers;
 
 public class BaseResponse {
     private final String status;
