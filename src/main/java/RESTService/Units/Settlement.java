@@ -7,19 +7,19 @@ import java.util.Objects;
  */
 public class Settlement {
     private String name;
-    private String yandexCode;
+    private String code;
 
-    public Settlement(String name, String yandexCode) {
+    public Settlement(String name, String code) {
         this.name = name;
-        this.yandexCode = yandexCode;
+        this.code = code;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getYandexCode() {
-        return yandexCode;
+    public String getCode() {
+        return code;
     }
 
     @Override

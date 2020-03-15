@@ -1,9 +1,7 @@
-package RESTService._UtilsDB;
+package RESTService._DB;
 
 import RESTService.Units.Request.UserRequest;
 import RESTService._Utils.DateUtils;
-import org.hibernate.Session;
-import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;

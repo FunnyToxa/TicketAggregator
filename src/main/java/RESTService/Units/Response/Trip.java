@@ -1,9 +1,11 @@
 package RESTService.Units.Response;
 
+import RESTService.Units.Request.UserRequest;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 /**
  * Класс поездок
@@ -17,11 +19,26 @@ public class Trip {
     private int tripId;
     //номер рейса
     private String number;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "stationFromCode")
     private Station stationFrom;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "stationToCode")
     private Station stationTo;
     private Date department;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "companyCode")
     private Company company;
     private int price;
+
+    private Date responseDate;
+
+    public Trip() {
+        this.responseDate = new Date();
+    }
+
+//        @ManyToMany(mappedBy = "trips")
+//    private Set<UserRequest> userRequests;
 
 
     public int getTripId() {
@@ -78,6 +95,14 @@ public class Trip {
 
     public void setNumber(String number) {
         this.number = number;
+    }
+
+    public Date getResponseDate() {
+        return responseDate;
+    }
+
+    public void setResponseDate(Date responseDate) {
+        this.responseDate = responseDate;
     }
 }
 

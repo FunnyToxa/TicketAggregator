@@ -1,9 +1,11 @@
-package RESTService._UtilsDB;
+package RESTService._DB;
 
 import RESTService.Units.Request.User;
 import RESTService.Units.Request.UserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 
 @Service
@@ -20,9 +22,9 @@ public class UserRequestService {
 
     public void saveUserRequest(UserRequest userRequest){
         //если пользователь уже есть в базе - подставляем его в запрос
-        User user = userRepository.findById(userRequest.getUser().getToken()).get();
-        if (user != null)
-            userRequest.setUser(user);
+        Optional<User> userOpt = userRepository.findById(userRequest.getUser().getToken());
+        if (userOpt.isPresent())
+            userRequest.setUser(userOpt.get());
         userRequestRepository.save(userRequest);
     }
 }

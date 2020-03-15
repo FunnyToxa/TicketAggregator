@@ -5,7 +5,8 @@ import RESTService.Units.Response.Trip;
 import RESTService.Units.Settlement;
 import RESTService.Units.Request.UserRequest;
 import RESTService.Controllers.UserRequest.UserRequestDTO;
-import RESTService._UtilsDB.UserRequestService;
+import RESTService._DB.TripService;
+import RESTService._DB.UserRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +22,9 @@ public class TicketAggrUtils {
 
     @Autowired
     private UserRequestService userRequestService;
+
+    @Autowired
+    private TripService tripService;
 
     /**
      * Проверка - был ли уже такой запрос
@@ -70,7 +74,7 @@ public class TicketAggrUtils {
      * @param userRequestDTO
      * @return
      */
-    public UserRequestResponse searchTrips (UserRequestDTO userRequestDTO){
+    public UserRequestResponse searchAndSaveTrips(UserRequestDTO userRequestDTO){
         Settlement cityFrom = apiService.findSettlement(userRequestDTO.getFrom());
         if (cityFrom == null)
             return new UserRequestResponse("Не удалось найти город отправления", null);
@@ -82,12 +86,15 @@ public class TicketAggrUtils {
                         "https://api.rasp.yandex.net/v3.0/search/?"
                                 + "apikey=f3504e64-a75e-418f-b2e7-d765a8027d2f"
                                 + "&transport_types=plane"
-                                + "&from=" + cityFrom.getYandexCode()
-                                + "&to=" + cityTo.getYandexCode()
+                                + "&from=" + cityFrom.getCode()
+                                + "&to=" + cityTo.getCode()
                                 + "&date=" + userRequestDTO.getTripDate()
             );
 
-            return new UserRequestResponse("Успешно", apiService.convertToListTrips(stringResponse));
+            List<Trip> trips = apiService.convertToListTrips(stringResponse);
+            tripService.saveTrips(trips);
+
+            return new UserRequestResponse("Успешно", trips);
 
         } catch (IOException e) {
             return new UserRequestResponse("Ошибка при поиске: " + e.getMessage(), null);

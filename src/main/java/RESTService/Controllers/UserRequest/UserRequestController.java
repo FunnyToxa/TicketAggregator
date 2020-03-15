@@ -39,7 +39,7 @@ public class UserRequestController {
                 //добавление запроса в базу
                 ticketAggrUtils.saveRequest(userRequestDTO);
                 //выполянем поиск и формируем ответ
-                requestResponse = ticketAggrUtils.searchTrips(userRequestDTO);
+                requestResponse = ticketAggrUtils.searchAndSaveTrips(userRequestDTO);
             }
             return ResponseEntity.ok(requestResponse);
         } catch (ParseException e) {
