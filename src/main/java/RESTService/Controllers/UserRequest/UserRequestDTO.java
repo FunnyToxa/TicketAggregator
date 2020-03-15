@@ -1,29 +1,29 @@
-package RESTService.Controllers;
+package RESTService.Controllers.UserRequest;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserRequestDTO {
-    private String mail;
+    private String token;
     private String from;
     private String to;
     //дата в запросе пользователя
-    private Date tripDate;
+    private String tripDate;
     //дата, когда был создан запрос
     private Date requestDate;
 
-    public UserRequestDTO(String mail, String from, String to, String tripDateString) throws ParseException {
-        this.mail = mail;
+    public UserRequestDTO(String token, String from, String to, String tripDateString) throws ParseException {
+        this.token = token;
         this.from = from;
         this.to = to;
         this.requestDate = new Date();
 
-        this.tripDate = getDateFromString(tripDateString);
+//        this.tripDate = getDateFromString(tripDateString);
+        this.tripDate = tripDateString;
 
     }
 
@@ -32,8 +32,8 @@ public class UserRequestDTO {
         return format.parse(stringDate);
     }
 
-    public String getMail() {
-        return mail;
+    public String getToken() {
+        return token;
     }
 
     public String getFrom() {
@@ -44,7 +44,7 @@ public class UserRequestDTO {
         return to;
     }
 
-    public Date getTripDate() {
+    public String getTripDate() {
         return tripDate;
     }
 

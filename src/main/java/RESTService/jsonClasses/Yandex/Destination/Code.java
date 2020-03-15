@@ -1,4 +1,4 @@
-package RESTService.jsonClasses.Yandex;
+package RESTService.jsonClasses.Yandex.Destination;
 
 import com.google.gson.annotations.SerializedName;
 
