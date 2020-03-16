@@ -1,4 +1,4 @@
-package RESTService.DTOUnits.Request;
+package RESTService.DTO.Request;
 
 import javax.persistence.*;
 import java.util.List;

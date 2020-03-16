@@ -1,6 +1,6 @@
-package RESTService.DTOUnits;
+package RESTService.DTO;
 
-import RESTService.DTOUnits.Response.Trip;
+import RESTService.DTO.Response.Trip;
 
 import java.util.List;
 

@@ -1,7 +1,6 @@
-package RESTService.DTOUnits.Request;
+package RESTService.DTO.Request;
 
-import RESTService.DTOUnits.Response.Trip;
-import RESTService.Utils.DateUtils;
+import RESTService.DTO.Response.Trip;
 
 import javax.persistence.*;
 import java.text.ParseException;
@@ -23,7 +22,7 @@ public class UserRequest {
     private String fromCityName;
     private String toCityName;
     private Date requestDate;
-    private Date tripDate;
+    private String tripDate;
 
     @ManyToMany(mappedBy = "userRequestsTrips")
     private Collection<Trip> trips;
@@ -35,7 +34,7 @@ public class UserRequest {
         this.user = new User(token);
         this.fromCityName = fromCityName;
         this.toCityName = toCityName;
-        this.tripDate = DateUtils.getDateFromString(tripDate);
+        this.tripDate = tripDate;
         this.requestDate = new Date();
     }
 
@@ -59,11 +58,15 @@ public class UserRequest {
         return requestDate;
     }
 
-    public Date getTripDate() {
+    public String getTripDate() {
         return tripDate;
     }
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Collection<Trip> getTrips() {
+        return trips;
     }
 }

@@ -1,10 +1,9 @@
 package RESTService.Service;
 
-import RESTService.DTOUnits.UserRequestResponse;
-import RESTService.DTOUnits.Response.Trip;
-import RESTService.DTOUnits.Settlement;
-import RESTService.DTOUnits.Request.UserRequest;
-import RESTService.DTOUnits.UserRequestDTO;
+import RESTService.DTO.UserRequestResponse;
+import RESTService.DTO.Response.Trip;
+import RESTService.DTO.Settlement;
+import RESTService.DTO.Request.UserRequest;
 import RESTService.Utils.HttpRequestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -29,51 +28,46 @@ public class TicketService {
 
     /**
      * Проверка - был ли уже такой запрос
-     * @param userRequestDTO
+     * @param userRequest
      * @return
      */
-    public boolean checkRequestOnExist(UserRequestDTO userRequestDTO){
-        try {
-            if (userRequestService.isUserRequestExist(getUserRequest(userRequestDTO)))
-                return true;
-        } catch (ParseException e) {
-            return false;
-        }
+    public boolean checkRequestOnExist(UserRequest userRequest){
+        if (userRequestService.isUserRequestExist(userRequest))
+            return true;
         return false;
     }
 
     /**
-     * сохранение запроса в базе
-     * @param userRequestDTO
+     * поиск userRequest в базе
+     * @param userRequest
+     * @return
      */
-    public UserRequest saveRequest(UserRequestDTO userRequestDTO) throws ParseException{
-        return userRequestService.saveUserRequest(getUserRequest(userRequestDTO));
+    public UserRequest findLastUserRequestInDB(UserRequest userRequest){
+        Integer lastId = userRequestService.findLastRequestId(userRequest);
+        if (lastId == -1)
+            return null;
+        return userRequestService.findUserRequest(lastId);
+    }
+
+    /**
+     * сохранение запроса в базе
+     * @param userRequest
+     */
+    public UserRequest saveRequest(UserRequest userRequest) throws ParseException{
+        return userRequestService.saveUserRequest(userRequest);
     }
 
 
     /**
-     * Преобразование userRequestDTO в UserRequest
-     * @param userRequestDTO
-     * @return UserRequest
-     * @throws ParseException
-     */
-    private UserRequest getUserRequest (UserRequestDTO userRequestDTO) throws ParseException {
-        return new UserRequest(userRequestDTO.getToken(),
-                                userRequestDTO.getFrom(),
-                                userRequestDTO.getTo(),
-                                userRequestDTO.getTripDate());
-}
-
-    /**
      * поиск и сохранение поездок
-     * @param userRequestDTO
+     * @param userRequest
      * @return
      */
-    public UserRequestResponse searchAndSaveTrips(UserRequestDTO userRequestDTO, UserRequest userRequest){
-        Settlement cityFrom = apiService.findSettlement(userRequestDTO.getFrom());
+    public UserRequestResponse searchAndSaveTrips(UserRequest userRequest){
+        Settlement cityFrom = apiService.findSettlement(userRequest.getFromCityName());
         if (cityFrom == null)
             return new UserRequestResponse("Не удалось найти город отправления", null);
-        Settlement cityTo = apiService.findSettlement(userRequestDTO.getTo());
+        Settlement cityTo = apiService.findSettlement(userRequest.getToCityName());
         if (cityTo == null)
             return new UserRequestResponse("Не удалось найти город прибытия", null);
         try {
@@ -83,7 +77,7 @@ public class TicketService {
                                 + "&transport_types=plane"
                                 + "&from=" + cityFrom.getCode()
                                 + "&to=" + cityTo.getCode()
-                                + "&date=" + userRequestDTO.getTripDate()
+                                + "&date=" + userRequest.getTripDate()
             );
 
             List<Trip> trips = apiService.convertToListTrips(stringResponse);

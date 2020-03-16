@@ -1,9 +1,7 @@
-package RESTService.DTOUnits.Response;
+package RESTService.DTO.Response;
 
-import RESTService.DTOUnits.Request.UserRequest;
+import RESTService.DTO.Request.UserRequest;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jdk.nashorn.internal.objects.annotations.Getter;
-import jdk.nashorn.internal.objects.annotations.Setter;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -33,8 +31,7 @@ public class Trip {
     private Company company;
     private int price;
 
-//    @Getter
-//    @Setter
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "trips_userRequest",
             joinColumns = @JoinColumn(name = "tripId"),

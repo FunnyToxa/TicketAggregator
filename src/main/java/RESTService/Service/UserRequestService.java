@@ -1,8 +1,7 @@
 package RESTService.Service;
 
-import RESTService.DTOUnits.Request.User;
-import RESTService.DTOUnits.Request.UserRequest;
-import RESTService.DTOUnits.UserRequestDTO;
+import RESTService.DTO.Request.User;
+import RESTService.DTO.Request.UserRequest;
 import RESTService.Repository.UserRepository;
 import RESTService.Repository.UserRequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,5 +28,16 @@ public class UserRequestService {
         if (userOpt.isPresent())
             userRequest.setUser(userOpt.get());
         return userRequestRepository.save(userRequest);
+    }
+
+    public UserRequest findUserRequest(Integer requestId){
+        Optional<UserRequest> urOpt = userRequestRepository.findById(requestId);
+        if (urOpt.isPresent())
+            return urOpt.get();
+        return null;
+    }
+
+    public Integer findLastRequestId(UserRequest userRequest){
+        return userRequestRepository.findId(userRequest);
     }
 }

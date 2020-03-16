@@ -1,4 +1,4 @@
-package RESTService.DTOUnits.Response;
+package RESTService.DTO.Response;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

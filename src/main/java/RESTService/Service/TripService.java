@@ -1,10 +1,9 @@
 package RESTService.Service;
 
-import RESTService.DTOUnits.Request.User;
-import RESTService.DTOUnits.Request.UserRequest;
-import RESTService.DTOUnits.Response.Company;
-import RESTService.DTOUnits.Response.Station;
-import RESTService.DTOUnits.Response.Trip;
+import RESTService.DTO.Request.UserRequest;
+import RESTService.DTO.Response.Company;
+import RESTService.DTO.Response.Station;
+import RESTService.DTO.Response.Trip;
 import RESTService.Repository.CompanyRepository;
 import RESTService.Repository.StationRepository;
 import RESTService.Repository.TripRepository;

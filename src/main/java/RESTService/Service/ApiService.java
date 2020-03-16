@@ -1,7 +1,7 @@
 package RESTService.Service;
 
-import RESTService.DTOUnits.Response.Trip;
-import RESTService.DTOUnits.Settlement;
+import RESTService.DTO.Response.Trip;
+import RESTService.DTO.Settlement;
 
 import java.util.List;
 

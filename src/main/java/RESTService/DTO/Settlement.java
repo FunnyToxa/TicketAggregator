@@ -1,4 +1,4 @@
-package RESTService.DTOUnits;
+package RESTService.DTO;
 
 import java.util.Objects;
 

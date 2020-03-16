@@ -1,7 +1,8 @@
 package RESTService.Repository;
 
-import RESTService.DTOUnits.Request.UserRequest;
+import RESTService.DTO.Request.UserRequest;
 
 public interface UserRequestCustomRepository {
      boolean isUserRequestExist(UserRequest userRequest);
+     Integer findId(UserRequest userRequest);
 }

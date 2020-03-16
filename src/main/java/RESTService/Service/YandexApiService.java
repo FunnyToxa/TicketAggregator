@@ -1,8 +1,8 @@
 package RESTService.Service;
 
-import RESTService.DTOUnits.Response.Company;
-import RESTService.DTOUnits.Response.Station;
-import RESTService.DTOUnits.Response.Trip;
+import RESTService.DTO.Response.Company;
+import RESTService.DTO.Response.Station;
+import RESTService.DTO.Response.Trip;
 import RESTService.Utils.HttpRequestUtils;
 import RESTService.jsonClasses.Yandex.Destination.Destination;
 import RESTService.jsonClasses.Yandex.Destination.Settlement;
@@ -63,14 +63,14 @@ public  class YandexApiService implements ApiService {
      * @return
      */
     @Override
-    public RESTService.DTOUnits.Settlement findSettlement(String name){
+    public RESTService.DTO.Settlement findSettlement(String name){
         Settlement tmpStmt = settlements.stream()
                 .filter(settlement -> settlement.getTitle().toLowerCase().contains(name.toLowerCase()))
                 .findFirst()
                 .orElse(null);
         if (tmpStmt == null)
             return null;
-        return new RESTService.DTOUnits.Settlement(tmpStmt.getTitle(), tmpStmt.getCodes().getYandexCode());
+        return new RESTService.DTO.Settlement(tmpStmt.getTitle(), tmpStmt.getCodes().getYandexCode());
     }
 
     /**
