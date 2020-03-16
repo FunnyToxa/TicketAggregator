@@ -1,11 +1,13 @@
-package RESTService.Units.Response;
+package RESTService.DTOUnits.Response;
 
-import RESTService.Units.Request.UserRequest;
+import RESTService.DTOUnits.Request.UserRequest;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jdk.nashorn.internal.objects.annotations.Getter;
+import jdk.nashorn.internal.objects.annotations.Setter;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Date;
-import java.util.Set;
 
 /**
  * Класс поездок
@@ -30,6 +32,15 @@ public class Trip {
     @JoinColumn(name = "companyCode")
     private Company company;
     private int price;
+
+//    @Getter
+//    @Setter
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "trips_userRequest",
+            joinColumns = @JoinColumn(name = "tripId"),
+            inverseJoinColumns = @JoinColumn(name = "requestId")
+    )
+    private Collection<UserRequest> userRequestsTrips;
 
     private Date responseDate;
 
@@ -103,6 +114,14 @@ public class Trip {
 
     public void setResponseDate(Date responseDate) {
         this.responseDate = responseDate;
+    }
+
+    public Collection<UserRequest> getUserRequestsTrips() {
+        return userRequestsTrips;
+    }
+
+    public void setUserRequestsTrips(Collection<UserRequest> userRequestsTrips) {
+        this.userRequestsTrips = userRequestsTrips;
     }
 }
 

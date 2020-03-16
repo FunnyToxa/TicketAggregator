@@ -1,13 +1,12 @@
-package RESTService.Units.Request;
+package RESTService.DTOUnits.Request;
 
-import RESTService.Units.Request.User;
-import RESTService.Units.Response.Trip;
-import RESTService._Utils.DateUtils;
+import RESTService.DTOUnits.Response.Trip;
+import RESTService.Utils.DateUtils;
 
 import javax.persistence.*;
 import java.text.ParseException;
+import java.util.Collection;
 import java.util.Date;
-import java.util.Set;
 
 /**
  * класс запросов от пользователей
@@ -26,8 +25,8 @@ public class UserRequest {
     private Date requestDate;
     private Date tripDate;
 
-//    @ManyToMany(mappedBy = "userRequests")
-//    private Set<Trip> trips;
+    @ManyToMany(mappedBy = "userRequestsTrips")
+    private Collection<Trip> trips;
 
     public UserRequest() {
     }

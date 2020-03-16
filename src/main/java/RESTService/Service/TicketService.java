@@ -1,12 +1,11 @@
-package RESTService._Utils;
+package RESTService.Service;
 
-import RESTService.Controllers.UserRequest.UserRequestResponse;
-import RESTService.Units.Response.Trip;
-import RESTService.Units.Settlement;
-import RESTService.Units.Request.UserRequest;
-import RESTService.Controllers.UserRequest.UserRequestDTO;
-import RESTService._DB.TripService;
-import RESTService._DB.UserRequestService;
+import RESTService.DTOUnits.UserRequestResponse;
+import RESTService.DTOUnits.Response.Trip;
+import RESTService.DTOUnits.Settlement;
+import RESTService.DTOUnits.Request.UserRequest;
+import RESTService.DTOUnits.UserRequestDTO;
+import RESTService.Utils.HttpRequestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,9 +13,11 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 
-
+/**
+ * основной класс для работы с запросами пользователя и поездками
+ */
 @Component
-public class TicketAggrUtils {
+public class TicketService {
     @Autowired
     private ApiService apiService;
 
@@ -41,15 +42,21 @@ public class TicketAggrUtils {
         return false;
     }
 
-    public String saveRequest(UserRequestDTO userRequestDTO) throws ParseException{
-        if (userRequestService.isUserRequestExist(getUserRequest(userRequestDTO)))
-            return "Запрос выполнен меньше 5 минут назад!";
-        else {
-            this.saveToDB(userRequestDTO);
-            return  "Запрос добавлен в базу";
-        }
+    /**
+     * сохранение запроса в базе
+     * @param userRequestDTO
+     */
+    public UserRequest saveRequest(UserRequestDTO userRequestDTO) throws ParseException{
+        return userRequestService.saveUserRequest(getUserRequest(userRequestDTO));
     }
 
+
+    /**
+     * Преобразование userRequestDTO в UserRequest
+     * @param userRequestDTO
+     * @return UserRequest
+     * @throws ParseException
+     */
     private UserRequest getUserRequest (UserRequestDTO userRequestDTO) throws ParseException {
         return new UserRequest(userRequestDTO.getToken(),
                                 userRequestDTO.getFrom(),
@@ -58,23 +65,11 @@ public class TicketAggrUtils {
 }
 
     /**
-     * сохранение в базе
-     * @param userRequestDTO
-     */
-    private void saveToDB(UserRequestDTO userRequestDTO) throws ParseException {
-        userRequestService.saveUserRequest(getUserRequest(userRequestDTO));
-    }
-
-    private void saveToDB(List<Trip> trips){
-
-    }
-
-    /**
-     *
+     * поиск и сохранение поездок
      * @param userRequestDTO
      * @return
      */
-    public UserRequestResponse searchAndSaveTrips(UserRequestDTO userRequestDTO){
+    public UserRequestResponse searchAndSaveTrips(UserRequestDTO userRequestDTO, UserRequest userRequest){
         Settlement cityFrom = apiService.findSettlement(userRequestDTO.getFrom());
         if (cityFrom == null)
             return new UserRequestResponse("Не удалось найти город отправления", null);
@@ -92,7 +87,7 @@ public class TicketAggrUtils {
             );
 
             List<Trip> trips = apiService.convertToListTrips(stringResponse);
-            tripService.saveTrips(trips);
+            tripService.saveTrips(trips, userRequest);
 
             return new UserRequestResponse("Успешно", trips);
 

@@ -1,12 +1,17 @@
-package RESTService._DB;
+package RESTService.Service;
 
-import RESTService.Units.Request.User;
-import RESTService.Units.Response.Company;
-import RESTService.Units.Response.Station;
-import RESTService.Units.Response.Trip;
+import RESTService.DTOUnits.Request.User;
+import RESTService.DTOUnits.Request.UserRequest;
+import RESTService.DTOUnits.Response.Company;
+import RESTService.DTOUnits.Response.Station;
+import RESTService.DTOUnits.Response.Trip;
+import RESTService.Repository.CompanyRepository;
+import RESTService.Repository.StationRepository;
+import RESTService.Repository.TripRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,7 +24,7 @@ public class TripService {
     @Autowired
     private CompanyRepository companyRepository;
 
-    public void saveTrips(List<Trip> trips){
+    public void saveTrips(List<Trip> trips, UserRequest userRequest){
         trips.forEach(trip -> {
                     Optional<Company> companyOpt = companyRepository.findById(trip.getCompany().getCompanyCode());
                     if (companyOpt.isPresent())
@@ -32,11 +37,10 @@ public class TripService {
                     stationOpt = stationRepository.findById(trip.getStationTo().getStationCode());
                     if (stationOpt.isPresent())
                         trip.setStationTo(stationOpt.get());
+                    //TODO: заместо создание нужно сделать поиск
+                    trip.setUserRequestsTrips(new HashSet<UserRequest>());
+                    trip.getUserRequestsTrips().add(userRequest);
                     tripRepository.save(trip);
                 });
-
-//        tripRepository.saveAll(trips);
     }
-
-
 }

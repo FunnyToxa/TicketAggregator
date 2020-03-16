@@ -1,4 +1,4 @@
-package RESTService.Controllers.UserRequest;
+package RESTService.DTOUnits;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -6,6 +6,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Класс объекта, который получаем из REST запроса пользователя в контроллере UserRequestController
+ */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserRequestDTO {
     private String token;

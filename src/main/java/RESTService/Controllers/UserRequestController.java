@@ -1,6 +1,9 @@
-package RESTService.Controllers.UserRequest;
+package RESTService.Controllers;
 
-import RESTService._Utils.TicketAggrUtils;
+import RESTService.DTOUnits.Request.UserRequest;
+import RESTService.DTOUnits.UserRequestDTO;
+import RESTService.DTOUnits.UserRequestResponse;
+import RESTService.Service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +15,7 @@ import java.text.ParseException;
 public class UserRequestController {
 
     @Autowired
-    private TicketAggrUtils ticketAggrUtils;
+    private TicketService ticketService;
 
     /**
      * получаем обратно запрос пользователя в виде объекта
@@ -23,9 +26,9 @@ public class UserRequestController {
      */
     @GetMapping
     public ResponseEntity<UserRequestResponse> getUserRequest(@RequestParam String token,
-                                                         @RequestParam String from,
-                                                         @RequestParam String to,
-                                                         @RequestParam String tripDate){
+                                                              @RequestParam String from,
+                                                              @RequestParam String to,
+                                                              @RequestParam String tripDate){
         UserRequestDTO userRequestDTO = null;
         try {
             userRequestDTO = new UserRequestDTO(token, from, to, tripDate);
@@ -33,13 +36,13 @@ public class UserRequestController {
             UserRequestResponse requestResponse = null;
 
             //проверяем - есть ли запрос в базе
-            if (ticketAggrUtils.checkRequestOnExist(userRequestDTO)){
+            if (ticketService.checkRequestOnExist(userRequestDTO)){
                 //TODO: здесь должен быть код получения ответа по запросу из БД/кэша
             } else {
                 //добавление запроса в базу
-                ticketAggrUtils.saveRequest(userRequestDTO);
+                UserRequest userRequest = ticketService.saveRequest(userRequestDTO);
                 //выполянем поиск и формируем ответ
-                requestResponse = ticketAggrUtils.searchAndSaveTrips(userRequestDTO);
+                requestResponse = ticketService.searchAndSaveTrips(userRequestDTO, userRequest);
             }
             return ResponseEntity.ok(requestResponse);
         } catch (ParseException e) {

@@ -1,8 +1,8 @@
-package RESTService._Config;
+package RESTService.Config;
 
-import RESTService._Utils.ApiService;
-import RESTService._Utils.TicketAggrUtils;
-import RESTService._Utils.YandexApiService;
+import RESTService.Service.ApiService;
+import RESTService.Service.TicketService;
+import RESTService.Service.YandexApiService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,8 +14,8 @@ import java.util.TimeZone;
 public class SpringConf {
 
     @Bean
-    public TicketAggrUtils getTicketAggrUtils() throws IOException {
-        return new TicketAggrUtils();
+    public TicketService getTicketAggrUtils() throws IOException {
+        return new TicketService();
     }
 
     @Bean

@@ -1,6 +1,6 @@
-package RESTService._DB;
+package RESTService.Repository;
 
-import RESTService.Units.Request.UserRequest;
+import RESTService.DTOUnits.Request.UserRequest;
 
 public interface UserRequestCustomRepository {
      boolean isUserRequestExist(UserRequest userRequest);

@@ -1,7 +1,7 @@
-package RESTService._DB;
+package RESTService.Repository;
 
-import RESTService.Units.Request.UserRequest;
-import RESTService._Utils.DateUtils;
+import RESTService.DTOUnits.Request.UserRequest;
+import RESTService.Utils.DateUtils;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;

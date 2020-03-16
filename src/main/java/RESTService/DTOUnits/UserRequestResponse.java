@@ -1,9 +1,16 @@
-package RESTService.Controllers.UserRequest;
+package RESTService.DTOUnits;
 
-import RESTService.Units.Response.Trip;
+import RESTService.DTOUnits.Response.Trip;
 
 import java.util.List;
 
+/**
+ * Описание ответа пользователю на запрос
+ * создержит:
+ * сообщение - message
+ * список поездок - trips
+ *
+ */
 public class UserRequestResponse {
     private String message;
     private List<Trip> trips;

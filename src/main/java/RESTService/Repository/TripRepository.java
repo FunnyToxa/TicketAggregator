@@ -1,6 +1,6 @@
-package RESTService._DB;
+package RESTService.Repository;
 
-import RESTService.Units.Response.Trip;
+import RESTService.DTOUnits.Response.Trip;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TripRepository extends JpaRepository<Trip, Integer> {

@@ -1,9 +1,7 @@
-package RESTService.Units.Request;
+package RESTService.DTOUnits.Request;
 
 import javax.persistence.*;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 /**
  * класс пользователя
