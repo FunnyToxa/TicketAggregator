@@ -1,6 +1,10 @@
-package RESTService.Units;
+package RESTService.DTO.Request;
+
+import RESTService.DTO.Response.Trip;
 
 import javax.persistence.*;
+import java.text.ParseException;
+import java.util.Collection;
 import java.util.Date;
 
 /**
@@ -13,37 +17,26 @@ public class UserRequest {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int requestId;
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "mail")
+    @JoinColumn(name = "token")
     private User user;
     private String fromCityName;
     private String toCityName;
     private Date requestDate;
-    private Date tripDate;
+    private String tripDate;
 
-//    public UserRequest(User user){
-//        this.requestDate = new Date();
-//        this.user = user;
-//    }
+    @ManyToMany(mappedBy = "userRequestsTrips")
+    private Collection<Trip> trips;
 
-    public UserRequest(String mail, String fromCityName, String toCityName, Date tripDate){
-        this.user = new User(mail);
+    public UserRequest() {
+    }
+
+    public UserRequest(String token, String fromCityName, String toCityName, String tripDate) throws ParseException {
+        this.user = new User(token);
         this.fromCityName = fromCityName;
         this.toCityName = toCityName;
         this.tripDate = tripDate;
         this.requestDate = new Date();
     }
-
-    public UserRequest(String mail, String fromCityName, String toCityName, Date tripDate, Date requestDate){
-        this.user = new User(mail);
-        this.fromCityName = fromCityName;
-        this.toCityName = toCityName;
-        this.tripDate = tripDate;
-        this.requestDate = requestDate;
-    }
-
-//    public UserRequest(){
-//
-//    }
 
     public int getRequestId() {
         return requestId;
@@ -65,7 +58,15 @@ public class UserRequest {
         return requestDate;
     }
 
-    public Date getTripDate() {
+    public String getTripDate() {
         return tripDate;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Collection<Trip> getTrips() {
+        return trips;
     }
 }

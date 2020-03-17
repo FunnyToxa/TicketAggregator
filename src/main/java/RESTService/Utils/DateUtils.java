@@ -1,8 +1,9 @@
 package RESTService.Utils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
 
 /**
  * Утильный класс для операций с датой
@@ -23,5 +24,16 @@ public class DateUtils
         cal.roll(Calendar.MINUTE, minutes);
         System.out.println(cal.getTime());
         return cal.getTime();
+    }
+
+    /**
+     * Получение даты из строки
+     * @param stringDate формата yyyy-MM-dd
+     * @return
+     * @throws ParseException
+     */
+    public static Date getDateFromString(String stringDate) throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        return format.parse(stringDate);
     }
 }
