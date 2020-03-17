@@ -16,6 +16,10 @@ public class Company {
     @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Trip> trips;
 
+    @Column(length = 8192)
+    private String contacts;
+    private String address;
+
     public Company() {
     }
 
@@ -46,5 +50,21 @@ public class Company {
 
     public void setTrips(List<Trip> trips) {
         this.trips = trips;
+    }
+
+    public String getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(String contacts) {
+        this.contacts = contacts;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

@@ -1,6 +1,7 @@
 package RESTService.DTO.Request;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -15,6 +16,10 @@ public class User {
 
     @Column(length = 64)
     private String mail;
+
+    private String contacts;
+
+    private Date expiredDate;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<UserRequest> requests;
@@ -48,6 +53,18 @@ public class User {
 
     public String getToken() {
         return token;
+    }
+
+    public String getContacts() {
+        return contacts;
+    }
+
+    public Date getExpiredDate() {
+        return expiredDate;
+    }
+
+    public List<UserRequest> getRequests() {
+        return requests;
     }
 
     @Override

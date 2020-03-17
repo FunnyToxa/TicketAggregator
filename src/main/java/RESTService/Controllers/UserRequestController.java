@@ -2,10 +2,10 @@ package RESTService.Controllers;
 
 import RESTService.DTO.Request.UserRequest;
 import RESTService.DTO.Response.Trip;
-import RESTService.DTO.UserRequestResponse;
+import RESTService.DTO.RequestResponse;
+import RESTService.DTO.Entries.UserResponseEntry;
 import RESTService.Service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
@@ -27,32 +27,40 @@ public class UserRequestController {
      * @return
      */
     @GetMapping
-    public ResponseEntity<UserRequestResponse> getUserRequest(@RequestParam String token,
-                                                              @RequestParam String from,
-                                                              @RequestParam String to,
-                                                              @RequestParam String tripDate){
-        UserRequest userRequest = null;
-        try {
-            userRequest = new UserRequest(token, from, to, tripDate);
+    public RequestResponse getUserRequest(@RequestParam String token,
+                                                          @RequestParam String from,
+                                                          @RequestParam String to,
+                                                          @RequestParam String tripDate){
 
-            UserRequestResponse requestResponse = null;
+        //проверяем авторизацию
+        if (!ticketService.checkToken(token))
+            return new RequestResponse("Ошибка авторизации. Токен не действителен!");
+
+
+        //отрабатываем запрос
+        try {
+            UserRequest userRequest = new UserRequest(token, from, to, tripDate);
 
             //проверяем - есть ли запрос в базе
-            if (ticketService.checkRequestOnExist(userRequest)){
+            boolean isRequestExist = ticketService.checkRequestOnExist(userRequest);
+            if (isRequestExist) {
                 userRequest = ticketService.findLastUserRequestInDB(userRequest);
                 List<Trip> trips = new ArrayList<Trip>(userRequest.getTrips());
-                requestResponse = new UserRequestResponse("Выгрузка по последнему запросу", trips);
-            } else {
+                if (trips.size() > 0)
+                    return new RequestResponse(new UserResponseEntry(trips));
+                else
+                    isRequestExist = false;
+            }
+            //повторно смотрим условие (т.к. если запрос есть в базе но нет поездок - пробуем искать заново)
+            if (!isRequestExist){
                 //добавление запроса в базу
                 UserRequest dbUserRequest = ticketService.saveRequest(userRequest);
                 //выполянем поиск и формируем ответ
-                requestResponse = ticketService.searchAndSaveTrips(userRequest);
+                return ticketService.searchAndSaveTrips(userRequest);
             }
-            return ResponseEntity.ok(requestResponse);
         } catch (ParseException e) {
-            return ResponseEntity.ok(new UserRequestResponse("Ошибка при получении данных: " + e.getMessage() , null));
+            return new RequestResponse("Ошибка при получении данных: " + e.getMessage());
         }
-
-
+        return new RequestResponse("Неизвестная ошибка!");
     }
 }

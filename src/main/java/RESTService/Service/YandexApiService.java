@@ -89,7 +89,10 @@ public  class YandexApiService implements ApiService {
 
         response.getSegments().forEach(segment -> {
             Trip tmpTrip = new Trip();
-            tmpTrip.setCompany(new Company(segment.getThread().getCarrier().getTitle(), segment.getThread().getCarrier().getCode().toString()));
+            Company company = new Company(segment.getThread().getCarrier().getTitle(), segment.getThread().getCarrier().getCode().toString());
+            company.setAddress(segment.getThread().getCarrier().getAddress());
+            company.setContacts(segment.getThread().getCarrier().getContacts());
+            tmpTrip.setCompany(company);
             tmpTrip.setDepartment(segment.getDeparture());
             tmpTrip.setStationFrom(new Station(segment.getFrom().getTitle(), segment.getFrom().getCode()));
             tmpTrip.setStationTo(new Station(segment.getTo().getTitle(), segment.getTo().getCode()));

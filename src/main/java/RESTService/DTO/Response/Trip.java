@@ -39,6 +39,7 @@ public class Trip {
     )
     private Collection<UserRequest> userRequestsTrips;
 
+    @JsonIgnore
     private Date responseDate;
 
     public Trip() {

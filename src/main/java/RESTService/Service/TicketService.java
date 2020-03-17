@@ -1,15 +1,19 @@
 package RESTService.Service;
 
-import RESTService.DTO.UserRequestResponse;
+import RESTService.DTO.Request.User;
+import RESTService.DTO.Response.Company;
 import RESTService.DTO.Response.Trip;
+import RESTService.DTO.RequestResponse;
 import RESTService.DTO.Settlement;
 import RESTService.DTO.Request.UserRequest;
+import RESTService.DTO.Entries.UserResponseEntry;
 import RESTService.Utils.HttpRequestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,6 +29,8 @@ public class TicketService {
 
     @Autowired
     private TripService tripService;
+
+    @Autowired UserService userService;
 
     /**
      * Проверка - был ли уже такой запрос
@@ -63,13 +69,13 @@ public class TicketService {
      * @param userRequest
      * @return
      */
-    public UserRequestResponse searchAndSaveTrips(UserRequest userRequest){
+    public RequestResponse searchAndSaveTrips(UserRequest userRequest){
         Settlement cityFrom = apiService.findSettlement(userRequest.getFromCityName());
         if (cityFrom == null)
-            return new UserRequestResponse("Не удалось найти город отправления", null);
+            return new RequestResponse("Не удалось найти город отправления");
         Settlement cityTo = apiService.findSettlement(userRequest.getToCityName());
         if (cityTo == null)
-            return new UserRequestResponse("Не удалось найти город прибытия", null);
+            return new RequestResponse("Не удалось найти город прибытия");
         try {
             String stringResponse = HttpRequestUtils.executeGetRequest(
                         "https://api.rasp.yandex.net/v3.0/search/?"
@@ -83,10 +89,18 @@ public class TicketService {
             List<Trip> trips = apiService.convertToListTrips(stringResponse);
             tripService.saveTrips(trips, userRequest);
 
-            return new UserRequestResponse("Успешно", trips);
+            return new RequestResponse(new UserResponseEntry(trips));
 
         } catch (IOException e) {
-            return new UserRequestResponse("Ошибка при поиске: " + e.getMessage(), null);
+            return new RequestResponse("Ошибка при поиске: " + e.getMessage());
         }
+    }
+
+    public boolean checkToken(String token){
+        User user = userService.findUser(token);
+        Date nowDate = new Date();
+        if (user == null || user.getExpiredDate().compareTo(nowDate) < 0)
+            return false;
+        return true;
     }
 }
