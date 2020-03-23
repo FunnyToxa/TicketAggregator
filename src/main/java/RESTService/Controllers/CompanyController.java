@@ -6,6 +6,7 @@ import RESTService.DTO.Response.Company;
 import RESTService.Service.CompanyService;
 import RESTService.Service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.CannotCreateTransactionException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,17 +26,29 @@ public class CompanyController {
      */
     @GetMapping
     public RequestResponse getCompanies(){
-        List<Company> companies = companyService.getAllCompanies();
-        if (companies.size() == 0)
-            return new RequestResponse("Нет компаний в базе");
-        return new RequestResponse(new CompanyEntry(companies));
+        try {
+            List<Company> companies = companyService.getAllCompanies();
+            if (companies.size() == 0)
+                return new RequestResponse("Нет компаний в базе");
+            return new RequestResponse(new CompanyEntry(companies));
+        } catch (CannotCreateTransactionException e){ //обработка ошибки если БД стала недоступна во время работы приложения
+            return new RequestResponse("Сервис временно недоступен. Просьба повторить попытку через некоторое время.");
+        } catch (RuntimeException e){
+            return new RequestResponse("Неизвестная ошибка!");
+        }
     }
 
     @GetMapping("{companyName}")
     public RequestResponse getSameCompany(@PathVariable String companyName){
-        List<Company> companies = companyService.findCompanyByName(companyName);
-        if (companies.size() == 0)
-            return new RequestResponse("Компании с таким именем не найдены");
-        return new RequestResponse(new CompanyEntry(companies));
+        try {
+            List<Company> companies = companyService.findCompanyByName(companyName);
+            if (companies.size() == 0)
+                return new RequestResponse("Компании с таким именем не найдены");
+            return new RequestResponse(new CompanyEntry(companies));
+        } catch (CannotCreateTransactionException e){ //обработка ошибки если БД стала недоступна во время работы приложения
+            return new RequestResponse("Сервис временно недоступен. Просьба повторить попытку через некоторое время.");
+        } catch (RuntimeException e){
+            return new RequestResponse("Неизвестная ошибка!");
+        }
     }
 }

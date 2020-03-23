@@ -6,6 +6,7 @@ import RESTService.DTO.RequestResponse;
 import RESTService.DTO.Entries.UserResponseEntry;
 import RESTService.Service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.CannotCreateTransactionException;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
@@ -33,8 +34,15 @@ public class UserRequestController {
                                                           @RequestParam String tripDate){
 
         //проверяем авторизацию
-        if (!ticketService.checkToken(token))
-            return new RequestResponse("Ошибка авторизации. Токен не действителен!");
+        try {
+            if (!ticketService.checkToken(token))
+                return new RequestResponse("Ошибка авторизации. Токен не действителен!");
+        } catch (CannotCreateTransactionException e){ //обработка ошибки если БД стала недоступна во время работы приложения
+            return new RequestResponse("Сервис временно недоступен. Просьба повторить попытку через некоторое время.");
+        } catch (RuntimeException e){
+            return new RequestResponse("Неизвестная ошибка!");
+        }
+
 
 
         //отрабатываем запрос
