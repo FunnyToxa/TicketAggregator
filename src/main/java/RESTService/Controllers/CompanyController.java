@@ -19,6 +19,8 @@ import java.util.List;
 public class CompanyController {
     @Autowired
     private CompanyService companyService;
+    @Autowired
+    private TicketService ticketService;
 
     /**
      * Получение списка всех компаний, которые есть в базе
@@ -45,10 +47,8 @@ public class CompanyController {
             if (companies.size() == 0)
                 return new RequestResponse("Компании с таким именем не найдены");
             return new RequestResponse(new CompanyEntry(companies));
-        } catch (CannotCreateTransactionException e){ //обработка ошибки если БД стала недоступна во время работы приложения
-            return new RequestResponse("Сервис временно недоступен. Просьба повторить попытку через некоторое время.");
-        } catch (RuntimeException e){
-            return new RequestResponse("Неизвестная ошибка!");
+        } catch (Exception e){ //обработка ошибки если БД стала недоступна во время работы приложения
+            return ticketService.checkException(e);
         }
     }
 }

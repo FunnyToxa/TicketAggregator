@@ -29,10 +29,8 @@ public class ReportController {
         try {
             if (!ticketService.checkToken(token))
                 return new RequestResponse("Ошибка авторизации. Токен не действителен!");
-        } catch (CannotCreateTransactionException e){ //обработка ошибки если БД стала недоступна во время работы приложения
-            return new RequestResponse("Сервис временно недоступен. Просьба повторить попытку через некоторое время.");
-        } catch (RuntimeException e){
-            return new RequestResponse("Неизвестная ошибка!");
+        } catch (Exception e){ //обработка ошибки если БД стала недоступна во время работы приложения
+            return ticketService.checkException(e);
         }
 
         List<Map<String, String>> report = userRequestRepository.getCountOfUserRequestsGroupedByDays();

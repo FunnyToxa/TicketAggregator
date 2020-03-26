@@ -10,6 +10,7 @@ import RESTService.DTO.Entries.UserResponseEntry;
 import RESTService.Utils.HttpRequestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.CannotCreateTransactionException;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -102,5 +103,15 @@ public class TicketService {
         if (user == null || user.getExpiredDate().compareTo(nowDate) < 0)
             return false;
         return true;
+    }
+
+    public RequestResponse checkException(Exception e){
+        if (e instanceof CannotCreateTransactionException) {
+            return new RequestResponse("Сервис временно недоступен. Просьба повторить попытку через некоторое время.");
+        }
+//        if (e instanceof RuntimeException) {
+//            return new RequestResponse("Неизвестная ошибка!");
+//        }
+        return new RequestResponse("Неизвестная ошибка!");
     }
 }
